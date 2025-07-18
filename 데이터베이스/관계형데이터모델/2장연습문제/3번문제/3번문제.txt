@@ -1,0 +1,134 @@
+1. 다음 릴레이션 R, S에 대한 관계대수식의 결과를 작성하시오.
+    
+    1. $σ_{A=a2}(R)$
+σ 
+A=a2
+​
+ (R)
+조건: A 값이 a2인 튜플만 추출
+→ 결과:
+
+A	B	C
+a2	b1	c1
+    
+    2. $π_{A,B}(R)$
+A, B 속성만 추출 (중복 제거)
+→ 결과:
+
+A	B
+a1	b1
+a2	b1
+a3	b1
+a4	b2
+    
+    3. $π_{A,B}(σ_{A=a2}(R)$
+1번 결과에서 A, B만 추출
+→ 결과:
+
+A	B
+a2	b1
+    
+    4. RxS
+R 4개 × S 4개 = 총 16개 튜플
+→ 결과 일부 예시 (총 16행):
+
+A	B	C	C	D	E
+a1	b1	c1	c1	d2	e1
+a1	b1	c1	c1	d1	e2
+a1	b1	c1	c2	d3	e3
+a1	b1	c1	c5	d3	e3
+a2	b1	c1	c1	d2	e1
+    
+    5. $R⨝_{R.c=S.c}S$
+R과 S의 C 속성이 같은 튜플끼리만 연결
+→ 매칭되는 값: c1 (2개 in R) ↔ c1 (2개 in S) → 4행
+
+c2 (1개 in R) ↔ c2 (1개 in S) → 1행
+→ 총 5행 결과
+
+A	B	C	D	E
+a1	b1	c1	d2	e1
+a1	b1	c1	d1	e2
+a2	b1	c1	d2	e1
+a2	b1	c1	d1	e2
+a3	b1	c2	d3	e3
+    
+    6. $R⟕_{R.c=S.c}S$
+R 기준 조인 + 매칭 없는 R도 포함 (NULL)
+→ 추가되는 튜플: R의 a4, b2, c4 는 S에 매칭 없음
+
+A	B	C	D	E
+a1	b1	c1	d2	e1
+a1	b1	c1	d1	e2
+a2	b1	c1	d2	e1
+a2	b1	c1	d1	e2
+a3	b1	c2	d3	e3
+a4	b2	c4	NULL	NULL
+    
+    7. $R⟖_{R.c=S.c}S$
+S 기준 조인 + 매칭 없는 S도 포함 (NULL)
+→ 추가되는 튜플: S의 c5, d3, e3는 R에 매칭 없음
+
+A	B	C	D	E
+a1	b1	c1	d2	e1
+a1	b1	c1	d1	e2
+a2	b1	c1	d2	e1
+a2	b1	c1	d1	e2
+a3	b1	c2	d3	e3
+NULL	NULL	c5	d3	e3
+    
+    8. $R⟗_{R.c=S.c}S$
+양쪽 모두 Outer Join → 위의 6, 7번 결과 합침
+→ 총 7행
+
+A	B	C	D	E
+a1	b1	c1	d2	e1
+a1	b1	c1	d1	e2
+a2	b1	c1	d2	e1
+a2	b1	c1	d1	e2
+a3	b1	c2	d3	e3
+a4	b2	c4	NULL	NULL
+NULL	NULL	c5	d3	e3
+
+    
+    9. $π_c(R) ∪ π_c(S)$
+R과 S의 C 속성 값들의 합집합 (중복 제거)
+
+𝑅
+.
+𝐶
+=
+{
+𝑐
+1
+,
+𝑐
+2
+,
+𝑐
+4
+}
+R.C={c1,c2,c4}
+
+𝑆
+.
+𝐶
+=
+{
+𝑐
+1
+,
+𝑐
+2
+,
+𝑐
+5
+}
+S.C={c1,c2,c5}
+→ 합집합 = {c1, c2, c4, c5}
+
+C
+c1
+c2
+c4
+c5
