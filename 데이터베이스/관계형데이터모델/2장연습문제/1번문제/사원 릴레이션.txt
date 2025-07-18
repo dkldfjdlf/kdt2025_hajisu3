@@ -1,0 +1,19 @@
+USE madangdb;
+
+CREATE TABLE 사원 (
+    주민등록번호 CHAR(13) NOT NULL,
+    사원번호 INT NOT NULL,
+    사원이름 VARCHAR(50) NOT NULL,
+    주소 VARCHAR(100),
+    생년월일 DATE NOT NULL,
+    PRIMARY KEY (사원이름, 생년월일),
+    UNIQUE (주민등록번호),
+    UNIQUE (사원번호)
+);
+
+INSERT INTO 사원 VALUES
+('9001011234567', 1001, '김민수', '서울시 강남구', '1990-01-01'),
+('9102022234567', 1002, '이영희', '부산시 해운대구', '1991-02-02'),
+('9203032345678', 1003, '박지현', NULL, '1992-03-03');
+
+SELECT * FROM 사원;
