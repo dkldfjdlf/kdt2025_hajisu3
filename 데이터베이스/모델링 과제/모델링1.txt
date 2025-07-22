@@ -1,0 +1,85 @@
+-- 1. 부서 테이블
+CREATE TABLE 부서 (
+    부서번호 INT PRIMARY KEY AUTO_INCREMENT,
+    부서이름 VARCHAR(50) NOT NULL
+);
+
+-- 2. 직원 테이블
+CREATE TABLE 직원 (
+    직원번호 INT PRIMARY KEY AUTO_INCREMENT,
+    직원이름 VARCHAR(50) NOT NULL,
+    직책 VARCHAR(50) NOT NULL,
+    부서번호 INT,
+    FOREIGN KEY (부서번호) REFERENCES 부서(부서번호)
+);
+
+-- 3. 근무 테이블 (복합키: 직원번호 + 부서번호)
+CREATE TABLE 근무 (
+    직원번호 INT,
+    부서번호 INT,
+    기간 VARCHAR(50) NOT NULL,
+    직책 VARCHAR(50) NOT NULL,
+    PRIMARY KEY (직원번호, 부서번호),
+    FOREIGN KEY (직원번호) REFERENCES 직원(직원번호),
+    FOREIGN KEY (부서번호) REFERENCES 부서(부서번호)
+);
+
+-- 4. 부양가족 테이블 (복합키: 직원번호 + 이름)
+CREATE TABLE 부양가족 (
+    직원번호 INT,
+    이름 VARCHAR(50),
+    관계 VARCHAR(50) NOT NULL,
+    PRIMARY KEY (직원번호, 이름),
+    FOREIGN KEY (직원번호) REFERENCES 직원(직원번호)
+);
+
+
+
+
+
+
+-- 1. 회사 테이블
+CREATE TABLE 회사 (
+    회사ID INT PRIMARY KEY AUTO_INCREMENT,
+    회사이름 VARCHAR(100) NOT NULL
+);
+
+-- 2. 주차장 테이블
+CREATE TABLE 주차장 (
+    주차장ID INT PRIMARY KEY AUTO_INCREMENT,
+    이름 VARCHAR(50),
+    위치 VARCHAR(50),
+    대수 INT,
+    주차층 INT,
+    회사ID INT NOT NULL,
+    FOREIGN KEY (회사ID) REFERENCES 회사(회사ID)
+);
+
+-- 3. 주차공간 테이블
+CREATE TABLE 주차공간 (
+    공간ID INT PRIMARY KEY AUTO_INCREMENT,
+    주차장이름 VARCHAR(50),
+    일련번호 INT NOT NULL,
+    주차장ID INT NOT NULL,
+    FOREIGN KEY (주차장ID) REFERENCES 주차장(주차장ID)
+);
+
+-- 4. 직원 테이블
+CREATE TABLE 직원 (
+    사원번호 INT PRIMARY KEY AUTO_INCREMENT,
+    이름 VARCHAR(50) NOT NULL,
+    구내전화번호 VARCHAR(20),
+    운전면허증 VARCHAR(50)
+);
+
+-- 5. 주차공간요청 테이블
+CREATE TABLE 주차공간요청 (
+    요청ID INT PRIMARY KEY AUTO_INCREMENT,
+    사원번호 INT NOT NULL,
+    공간ID INT NOT NULL,
+    FOREIGN KEY (사원번호) REFERENCES 직원(사원번호),
+    FOREIGN KEY (공간ID) REFERENCES 주차공간(공간ID)
+);
+
+
+
