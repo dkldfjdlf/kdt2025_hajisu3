@@ -1,0 +1,252 @@
+1. 다음 릴레이션에서 후보키를 찾아보시오.
+HINT  함수 종속성을 보고 결정자 중 기본키가 되는 것들이 있는지를 찾아낸다. 예를 들어 R(A, B, C)에 대해 R에서 성립하는 함수 종속성으로부터 R의 모든 속성을 결정하는 A → ABC와 같은 함수 종속성을 유도할 수 있다면 A가 R의 키가 된다.
+
+    1.  릴레이션: R(A, B, C, D)
+    함수 종속성: A → BC, B → A, A → C, A → D, D → A
+
+함수 종속성:
+
+A → BC
+
+B → A
+
+A → C
+
+A → D
+
+D → A
+
+먼저 A → BC와 A → D가 있으므로 A → B, C, D를 만족하고
+즉, A⁺ = {A, B, C, D} = R
+
+또한,
+
+B → A, A → D ⇒ B⁺ = {B, A, C, D} = R
+
+D → A ⇒ D⁺ = {D, A, B, C} = R
+
+후보키: B, D, A
+    
+    2. 릴레이션: R(A, B, C, D)
+    함수 종속성: A → B, B → C, AC → D
+
+함수 종속성:
+
+A → B
+
+B → C
+
+AC → D
+
+Step 1: 속성 클로저 확인
+A⁺ = {A, B, C} (A → B → C)
+→ D 없음
+
+AC⁺ = {A, C, B, D}
+→ AC는 R 전체를 포함 ⇒ 후보키 가능성 있음
+
+후보키: AC
+
+다른 조합도 확인:
+
+B⁺ = {B, C}
+
+AB⁺ = {A, B, C}
+
+BC⁺ = {B, C}
+
+ABC⁺ = {A, B, C}
+→ 어떤 것도 D 유도 못함
+
+후보키: {A, C}
+    
+    3. 릴레이션: R(A, B, C, D, E)
+    함수 종속성: AB → C, CD → E, DE → B
+
+함수 종속성:
+
+AB → C
+
+CD → E
+
+DE → B
+
+Step 1: 후보키 후보 탐색
+시험적으로 AB⁺
+
+AB⁺ = {A, B, C}
+→ D, E 없음
+
+시험적으로 ABD⁺
+
+ABD⁺ → AB → C
+→ CD → E 필요하므로 C, D 있어야 → CD⁺ = CDE
+
+CDE → B (given)
+→ 결국 A, B, D → C → CD → E → B (이미 있음)
+
+시험적으로 AD⁺
+
+AD → A, D
+
+CD 필요 → C 없음
+→ 부족
+
+시험적으로 A, D, B
+
+A, B, D → AB → C
+
+CD → E (C, D 포함됨)
+
+DE → B
+
+→ ABD⁺ = {A, B, C, D, E} = R
+
+후보키: ABD
+
+다른 조합으로 R 유도할 수 있는지 확인
+
+CD⁺ = {C, D, E}
+→ A, B 없음
+
+CDE⁺ = {C, D, E, B}
+→ A 없음
+→ 불가
+
+후보키: ABD
+    
+    4. 릴레이션: R(A, B, C, D, E)
+    함수 종속성: AC → E, C → D, D → A
+
+함수 종속성:
+
+AC → E
+
+C → D
+
+D → A
+
+Step 1: 속성 클로저 계산
+C⁺ = {C, D, A, E}
+(C → D → A, AC → E)
+
+→ 여기에 B만 추가하면 전체
+
+BC⁺ = {B, C, D, A, E} = R
+
+후보키: BC
+
+→ 다른 조합 확인:
+
+AC⁺ = {A, C, D, E} → B 없음
+
+CD⁺ = {C, D, A, E} → B 없음
+
+ABC⁺ = {A, B, C, D, E} = R
+→ ABC는 가능하지만 BC가 더 작으므로 최소성 만족
+
+후보키: BC
+
+1. 다음은 배송(Shipping) 물품에 대한 릴레이션이다. 물음에 답하시오.
+    
+    ```sql
+    릴레이션: Shipping(shipname, shiptype, voyageID, cargo, port, date)
+    함수 종속성: shipname → shiptype
+    			voyageID → shipname, cargo
+    			shipname, date → voyageID, port
+    ```
+    
+    ![image.png](attachment:bca2fbac-5214-4028-9423-a3d2c5ee2de1:image.png)
+    
+    A. 후보키를 찾으시오.
+(shipname, date)
+    
+    B. 제2정규형으로 정규화하시오.
+테이블 1: Ship
+속성: shipname, shiptype
+
+종속성: shipname → shiptype
+
+테이블 2: VoyagePort
+속성: shipname, date, voyageID, port
+
+테이블 3: Cargo
+속성: voyageID, cargo
+    
+
+C. 제3정규형으로 정규화하시오.
+
+테이블 1: Ship
+shipname, shiptype
+
+테이블 2: Voyage
+voyageID, shipname, cargo
+
+테이블 3: PortInfo
+shipname, date, voyageID, port
+
+→ shipname, date → voyageID, port
+
+D. BCNF로 정규화하시오.
+
+1. Ship
+text
+복사
+편집
+shipname → shiptype
+→ 속성: shipname, shiptype
+
+2. Voyage
+text
+복사
+편집
+voyageID → shipname, cargo
+→ 속성: voyageID, shipname, cargo
+
+3. PortInfo
+text
+복사
+편집
+shipname, date → voyageID, port
+→ 속성: shipname, date, voyageID, port
+
+1. 다음은 부품과 공급자에 대한 릴레이션 Part(partnumber, description, supplier, suppaddress, price)이다. 물음에 답하시오.
+    
+    ![image.png](attachment:6ace59c6-10ed-49a3-8dc9-d48eca3310d2:image.png)
+    
+    A. 함수 종속성을 찾아보시오.
+
+1. partnumber → description
+2. supplier → suppaddress
+3. (partnumber, supplier) → price
+    
+    B. 릴레이션 Part는 어떤 정규형인가?
+
+이 릴레이션은 1NF이며, 2NF를 만족하지 않음
+    
+
+C. 다음과 같이 분해했을 때 각각의 릴레이션은 어떤 정규형인가?
+
+R1(partnumber, description, supplier, price)
+
+ R1은 2NF, 3NF 만족
+
+R2(supplier, suppaddress)
+
+R2는 2NF, 3NF, BCNF까지 만족
+
+D. (C)번의 릴레이션에서 분해가 더 필요한가? 필요하면 분해를 수행하시오.
+
+분해가 필요한가 네 
+
+왜 필요한가 R1에서 partnumber → description이라는 함수 종속성이 존재하는데, partnumber는 슈퍼키가 아니므로 BCNF를 위배하기 때문입니다
+
+어떻게 분해해야하는가
+
+R1을 두 릴레이션으로 나눕니다:
+→ R3(partnumber, description)
+→ R4(partnumber, supplier, price)
+
+결과적으로 모두 BCNF 만족하나요  네, 이 분해 이후에는 모든 릴레이션이 BCNF를 만족합니다.
+
+
